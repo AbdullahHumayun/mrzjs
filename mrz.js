@@ -41,12 +41,16 @@
 
     function processImage(imageDataUrl) {
       console.log('Processing image...');
-      Tesseract.recognize(imageDataUrl)
-        .then(result => {
-          console.log('OCR Result:', result.data.text);
-          parseMRZ(result.data.text);
-        })
-        .catch(error => console.error('Error processing image:', error));
+      Tesseract.recognize(
+        imageDataUrl,
+        'eng',
+        {
+          logger: m => console.log(m)
+        }
+      ).then(({ data: { text } }) => {
+        console.log('OCR Result:', text);
+        parseMRZ(text);
+      }).catch(error => console.error('Error processing image:', error));
     }
 
     function parseMRZ(ocrText) {
