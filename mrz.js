@@ -1,8 +1,13 @@
-<script src="https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js"></script>
 
-<script>
   document.addEventListener('DOMContentLoaded', function() {
     const uploadButton = document.getElementById('uploadButton');
+
+    if (!uploadButton) {
+      console.error('Upload button not found. Please ensure the ID is correct.');
+      return;
+    }
+
+    console.log('Upload button found:', uploadButton);
 
     // Create and append hidden file input
     const fileInput = document.createElement('input');
@@ -11,18 +16,26 @@
     fileInput.style.display = 'none';
     document.body.appendChild(fileInput);
 
+    console.log('File input created and appended to the body');
+
     uploadButton.addEventListener('click', function() {
+      console.log('Upload button clicked');
       fileInput.click();
     });
 
     fileInput.addEventListener('change', function(event) {
+      console.log('File input changed');
       const file = event.target.files[0];
       if (file) {
+        console.log('File selected:', file);
         const reader = new FileReader();
         reader.onload = function() {
+          console.log('File read as data URL');
           processImage(reader.result);
         };
         reader.readAsDataURL(file);
+      } else {
+        console.error('No file selected');
       }
     });
 
@@ -84,4 +97,3 @@
       return `${day}/${month}/${year}`;
     }
   });
-</script>
